@@ -1,6 +1,5 @@
 const childProcess = require('child_process')
-
-const core = require('@actions/core')
+const fail = require('./failure')
 
 function runCmd (cmd, label = '', input = null) {
   if (label.length > 0) {
@@ -16,7 +15,7 @@ function runCmd (cmd, label = '', input = null) {
   }
 
   if (result.status > 0) {
-    core.setFailed(`Command failed with code ${result.status}`)
+    fail(`Command failed with code ${result.status}`)
   }
 
   return { stdout: result.stdout, stderr: result.stderr }

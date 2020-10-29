@@ -5,6 +5,11 @@ inputs:
     description: 'Commit lint all commits until a commit whose message starts with this value is found'
     required: true
     default: 'Merge pull request #'
+  commit_msg_regex:
+    description: 'Regex that prescribes the correct commit message syntax'
+    required: true
+    #ex: feat: Ferlab-Ste-Justine/clin-project#390 Initial commit for commit lint action
+    default: '[a-z]+: [a-zA-Z0-9_-]+[\/][a-zA-Z0-9_-]+#\d+ .+'
 runs:
   using: 'node12'
   main: 'dist/index.js'

@@ -1,7 +1,8 @@
 const core = require('@actions/core')
 const runCmd = require('./runCmd')
+const fail = require('./failure')
 
-const commitMsgRegex = /[0-9a-z]+[ ](?:\(.+\)[ ])?()/;
+const commitMsgRegex = /[0-9a-z]+[ ](?:\(.+\)[ ])?(.*)/;
 function getCommitMessage(line) {
   const result = commitMsgRegex.exec(line)
   return result[1]
@@ -17,12 +18,12 @@ function cutMsgsAtStopPoint(stopPoint, msgs) {
 }
 
 function getCommitMessages(stopPoint) {
-  const output = runCmd(['git', 'log', '--oneline'], 'GIT_LOGS')
-  const msgs = output.split("\n").map(getCommitMessage)
+  const output = runCmd(['git', 'log', '--oneline'], 'GIT_LOGS').stdout.toString('utf-8')
+  const msgs = output.split("\n").filter((msg) => msg !== "").map(getCommitMessage)
   return cutMsgsAtStopPoint(stopPoint, msgs)
 }
 
-const correctCommitMsgRegex = /[a-z]+: [a-zA-Z0-9_-]\/[a-zA-Z0-9_-]#\d+ .+/;
+const correctCommitMsgRegex = RegExp(core.getInput('commit_msg_regex'))
 function validateCommits(msgs, failureFn) {
   msgs.forEach((msg) => {
     if(!msg.match(correctCommitMsgRegex)) {
@@ -34,5 +35,5 @@ function validateCommits(msgs, failureFn) {
 const stop = core.getInput('stop_at_commit_msg')
 const msgs = getCommitMessages(stop)
 validateCommits(msgs, (msg) => {
-  core.setFailed(`Following commit message doesn't follow the convention: ${msg}`)
+  fail(`Following commit message doesn't follow the convention: ${msg}`)
 })
