@@ -1,0 +1,10 @@
+name: 'Push docker image'
+description: 'Runs commit lint'
+inputs:
+  stop_at_commit_msg:
+    description: 'Commit lint all commits until a commit whose message starts with this value is found'
+    required: true
+    default: 'Merge pull request #'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

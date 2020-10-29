@@ -1,0 +1,1 @@
+docker run --rm -v $(pwd):/opt -w /opt node:12 sh -c "npm i -g @zeit/ncc && npm install && ncc build index.js"

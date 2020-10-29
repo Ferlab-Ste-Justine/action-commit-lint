@@ -1,0 +1,1 @@
+docker run --rm -v $(pwd):/opt -w /opt node:12 sh -c "npm install && ./node_modules/.bin/eslint *.js"
