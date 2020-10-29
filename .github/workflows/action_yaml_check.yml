@@ -1,0 +1,12 @@
+name: Action Yaml Check
+
+on: [push]
+
+jobs:
+  build:
+    name: Action Yaml Check
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check Yaml
+      run: yamllint action.yml
