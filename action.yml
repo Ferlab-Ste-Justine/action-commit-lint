@@ -9,8 +9,7 @@ inputs:
     default: 'Merge pull request #'
   commit_msg_regex:
     description: Regex that prescribes the correct commit message syntax
-    required: true
-    default: ''
+    required: false
   project_specific_repo:
     description: |
       Whether the repo is project-specific or not. Commit regex defaults to
