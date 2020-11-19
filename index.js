@@ -24,13 +24,18 @@ function getCommitMessages (stopPoint) {
 }
 
 const correctCommitMsgRegex = (() => {
+  const projectSpecificRepoExp = '(?:[a-z]+: #[0-9]+ .+)|(?:Auto-release .+)'
+  const projectAgnosticRepoExp = '(?:[a-z]+\\([a-zA-Z0-9_-]+\\): #[0-9]+ .+)|(?:Auto-release .+)'
+  let exp = ''
   if (core.getInput('commit_msg_regex') !== '') {
-    return RegExp(core.getInput('commit_msg_regex'))
+    exp = core.getInput('commit_msg_regex')
   } else if (core.getInput('project_specific_repo') === 'yes') {
-    return RegExp('(?:[a-z]+: #[0-9]+ .+)|(?:Auto-release .+)')
+    exp = projectSpecificRepoExp
   } else {
-    return RegExp('(?:[a-z]+\\([a-zA-Z0-9_-]+\\): #[0-9]+ .+)|(?:Auto-release .+)')
+    exp = projectAgnosticRepoExp
   }
+  core.debug(`Evaluating with regex: ${exp}`)
+  return RegExp(exp)
 })()
 
 function validateCommits (msgs, failureFn) {
@@ -43,6 +48,8 @@ function validateCommits (msgs, failureFn) {
 
 const stop = core.getInput('stop_at_commit_msg')
 const msgs = getCommitMessages(stop)
+core.debug(`Evaluating commits: \n${msgs.join('\n')}`)
+
 validateCommits(msgs, (msg) => {
   fail(`Following commit message doesn't follow the convention: ${msg}`)
 })
