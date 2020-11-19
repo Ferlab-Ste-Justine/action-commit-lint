@@ -10,7 +10,7 @@ inputs:
   commit_msg_regex:
     description: Regex that prescribes the correct commit message syntax
     required: true
-    default: '(?:[a-z]+: [a-zA-Z0-9_-]+[\/][a-zA-Z0-9_-]+#[0-9]+ .+)|(?:Auto-release .+)'
+    default: '(?:[a-z]+: #[0-9]+ .+)|(?:Auto-release .+)'
 runs:
   using: 'node12'
   main: 'dist/index.js'
