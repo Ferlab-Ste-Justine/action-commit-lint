@@ -23,7 +23,16 @@ function getCommitMessages (stopPoint) {
   return cutMsgsAtStopPoint(stopPoint, msgs)
 }
 
-const correctCommitMsgRegex = RegExp(core.getInput('commit_msg_regex'))
+const correctCommitMsgRegex = (() => {
+  if (core.getInput('commit_msg_regex') !== '') {
+    return RegExp(core.getInput('commit_msg_regex'))
+  } else if (core.getInput('project_specific_repo') === 'yes') {
+    return RegExp('(?:[a-z]+: #[0-9]+ .+)|(?:Auto-release .+)')
+  } else {
+    return RegExp('(?:[a-z]+\\([a-zA-Z0-9_-]+\\): #[0-9]+ .+)|(?:Auto-release .+)')
+  }
+})()
+
 function validateCommits (msgs, failureFn) {
   msgs.forEach((msg) => {
     if (!msg.match(correctCommitMsgRegex)) {
