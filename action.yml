@@ -9,8 +9,14 @@ inputs:
     default: 'Merge pull request #'
   commit_msg_regex:
     description: Regex that prescribes the correct commit message syntax
+    required: false
+  project_specific_repo:
+    description: |
+      Whether the repo is project-specific or not. Commit regex defaults to
+      <type>: #<ticket no> <commit msg> if project-specific, else it defaults
+      to <type>(<project>): #<ticket no> <commit msg>
     required: true
-    default: '(?:[a-z]+: [a-zA-Z0-9_-]+[\/][a-zA-Z0-9_-]+#[0-9]+ .+)|(?:Auto-release .+)'
+    default: 'yes'
 runs:
   using: 'node12'
   main: 'dist/index.js'
