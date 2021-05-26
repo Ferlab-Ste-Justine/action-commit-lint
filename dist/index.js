@@ -544,15 +544,12 @@ function getCommitMessages (stopPoint) {
 }
 
 const correctCommitMsgRegex = (() => {
-  const projectSpecificRepoExp = '(?:[a-z]+: #[0-9]+ .+)|(?:Auto-release .+)'
-  const projectAgnosticRepoExp = '(?:[a-z]+\\([a-zA-Z0-9_-]+\\): #[0-9]+ .+)|(?:Auto-release .+)'
+  const defaultExp = '(?:[a-z]+(?:\\([a-zA-Z0-9_-]+\\))?!?: [A-Z]{4}-[0-9]+ .+)|(?:Auto-release .+)'
   let exp = ''
   if (core.getInput('commit_msg_regex') !== '') {
     exp = core.getInput('commit_msg_regex')
-  } else if (core.getInput('project_specific_repo') === 'yes') {
-    exp = projectSpecificRepoExp
   } else {
-    exp = projectAgnosticRepoExp
+    exp = defaultExp
   }
   core.debug(`Evaluating with regex: ${exp}`)
   return RegExp(exp)
