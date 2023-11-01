@@ -24,7 +24,7 @@ function getCommitMessages (stopPoint) {
 }
 
 const correctCommitMsgRegex = (() => {
-  const defaultExp = '(?:[a-z]+(?:\\([a-zA-Z0-9_-]+\\))?!?: [A-Z]{2,8}-[0-9]+ .+)|(?:Auto-release .+)'
+  const defaultExp = '(?:[a-z]+(?:\\([a-zA-Z0-9_-]+\\))?!?: [A-Z]{2,8}-[0-9]+ .+)|(?:Auto-release .+)|(?:Adding release .+)|(?:Removing release .+)'
   let exp = ''
   if (core.getInput('commit_msg_regex') !== '') {
     exp = core.getInput('commit_msg_regex')
